@@ -26,6 +26,7 @@ class User extends CI_Controller
     {
         
         $username = $this->input->post('username');
+        $timer_array = date("s");
         $this->form_validation->set_rules('username', 'Username', 'trim|required');
 
         if($this->form_validation->run() == FALSE){
@@ -33,7 +34,10 @@ class User extends CI_Controller
         }
         else {
             $this->session->userdata('logged_in', TRUE);
+            
             $data['username'] = $username;
+            $data['timer_array'] = $timer_array;
+            
             $this->session->set_userdata('username', $username);
             $this->load->view('user/index', $data);
         }

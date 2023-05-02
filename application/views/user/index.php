@@ -13,91 +13,85 @@
 </head>
 <body>
 
-    <div class="container mt-5">
+    <div class="container mt-5" id="quiz_form">
         <div class="d-flex justify-content-between">
             <h4>Username: <?php echo $this->session->userdata('username'); ?></h4>
             <a href="" class="btn btn-primary">Restart Game</a>
         </div>
         <div class="d-flex justify-content-center row ">
-            <!-- <div class="slider"> -->
-            <?php 
-            // foreach($data as $row) {
-                ?>
-                <div class="col-md-12 col-lg-12">
-                    <div class="border">
-                        <div class="question bg-white p-3 border-bottom">
-                            <div class="d-flex flex-row justify-content-between align-items-center mcq">
-                                <h4>Quiz Game</h4>
-                                
-                                <h1><span id="countdown"></span></h1>
-                                
-                            </div>
-                        </div>
-                        <div class="question bg-white p-3 border-bottom">
-                            <div class="d-flex flex-row align-items-center question-title">
-                                <h3 class="text-danger"  value="" >
-                                    <span id="increment"></span> / 10.
-                                </h3>
-                                <h5 class="mt-1 ml-2" id="question">
-                                </h5>
-                            </div>
-                            <div class="ans ml-2">
-                                <label class="radio">
-                                    <!-- <button id="selectedopt"> -->
-                                    <input type="radio" name="option" value="" id="option-1">
-                                        <span id="option1">
-                                        </span>
-                                    <!-- </button> -->
-                                   
-                                </label>    
-                            </div>
-                            <div class="ans ml-2">
-                                <label class="radio">
-                                    <!-- <button id="selectedopt"> -->
-                                    <input type="radio" name="option" value="" id="option-2">
-
-                                    <span id="option2">
-
-                                    </span>
-                                    <!-- </button> -->
-                                </label>    
-                            </div>
-                            <div class="ans ml-2">
-                                <label class="radio">
-                                    <!-- <button id="selectedopt"> -->
-                                    <input type="radio" name="option" value="" id="option-3">
-
-                                    <span id="option3">
-
-                                    </span>
-                                    <!-- </button> -->
-                                </label>    
-                            </div>
-                            <div class="ans ml-2">
-                                <label class="radio">
-                                    <!-- <button id="selectedopt"> -->
-                                    <input type="radio" name="option" value="" id="option-4">
-
-                                    <span id="option4">
-                                    </span>
-                                    <!-- </button> -->
-                                </label>    
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row justify-content-between align-items-center p-3 bg-white">
-                            <button class="btn btn-primary align-items-center btn-danger prev" type="button" id="prev"><i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous</button>
-                            <button class="btn btn-primary border-success align-items-center btn-success next" type="button" id="next">Next<i class="fa fa-angle-right ml-2"></i></button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="show">
-                                Show
-                            </button>
+           
+            <div class="col-md-12 col-lg-12" id="preview_form">
+                <div class="border">
+                    <div class="question bg-white p-3 border-bottom">
+                        <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                            <h4>Quiz Game</h4>
+                            
+                            <h1><span id="countdown"></span></h1>
+                            
                         </div>
                     </div>
+                    <div class="question bg-white p-3 border-bottom">
+                        <div class="d-flex flex-row align-items-center question-title">
+                            <h3 class="text-danger"  value="" >
+                                <span id="increment"></span> / 10.
+                            </h3>
+                            <h5 class="mt-1 ml-2" id="question">
+                            </h5>
+                        </div>
+                        <div class="ans ml-2">
+                            <label class="radio">
+                                <!-- <button id="selectedopt"> -->
+                                <input type="radio" name="option" value="" id="option-1">
+                                    <span id="option1">
+                                    </span>
+                                <!-- </button> -->
+                                
+                            </label>    
+                        </div>
+                        <div class="ans ml-2">
+                            <label class="radio">
+                                <!-- <button id="selectedopt"> -->
+                                <input type="radio" name="option" value="" id="option-2">
+
+                                <span id="option2">
+
+                                </span>
+                                <!-- </button> -->
+                            </label>    
+                        </div>
+                        <div class="ans ml-2">
+                            <label class="radio">
+                                <!-- <button id="selectedopt"> -->
+                                <input type="radio" name="option" value="" id="option-3">
+
+                                <span id="option3">
+
+                                </span>
+                                <!-- </button> -->
+                            </label>    
+                        </div>
+                        <div class="ans ml-2">
+                            <label class="radio">
+                                <!-- <button id="selectedopt"> -->
+                                <input type="radio" name="option" value="" id="option-4">
+
+                                <span id="option4">
+                                </span>
+                                <!-- </button> -->
+                            </label>    
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between align-items-center p-3 bg-white">
+                        <button class="btn btn-primary align-items-center btn-danger prev" type="button" id="prev"><i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous</button>
+                        <button class="btn btn-primary border-success align-items-center btn-success next" type="button" id="next">Next<i class="fa fa-angle-right ml-2"></i></button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="show">
+                            Show
+                        </button>
+                    </div>
                 </div>
-            <?php 
-            // } 
-            ?>
             </div>
-        <!-- </div> -->
+           
+        </div>
     </div>
 <!-- </div> -->
 
@@ -178,6 +172,10 @@
             var attempted_questions = 0;
             var count = 0;
             var blank = 0;
+
+
+            var is_preview = false;
+
             
             // $("#increment").html(id);
             
@@ -234,10 +232,6 @@
                 show();
             });
 
-
-            
-
-            
             $(document).on("click", "#next", function(e) {
                 e.preventDefault();
                 console.log(answers_selected);
@@ -254,11 +248,11 @@
                 
                 if(quiz_id > total_quiz-1){
                 // alert("Quiz result");
-                quiz_result();
-                $("#next").hide();
-                $("#show").click();
+                    quiz_result();
+                    $("#next").hide();
+                    $("#show").click();
 
-                return;
+                    return;
                 }
                 quiz_id++;
                 // console.log(id);
@@ -268,6 +262,10 @@
                     index++;
                     fetch();
                 }
+                // if(!is_preview) 
+                // {
+                //     timer();
+                // }
                 load_previous();
             });
 
@@ -292,7 +290,10 @@
                 quiz_id--;
                 // save_clicked();
                 index--;
-                timer();
+                if(!is_preview) 
+                {
+                    timer();
+                }
                 load_previous();
             });
 
@@ -322,6 +323,13 @@
 
                 // $('#quiz_form')[0].reset();
 
+                // timer();
+                if(is_preview)
+                {
+                    time = timer_array[quiz_id-1];
+                    $("#countdown").html(time);
+
+                }
                 const obj = JSON.parse(localStorage.getItem("item" +quiz_id));
                 
                 $("#increment").html(index+1);
@@ -372,7 +380,7 @@
                 "<td>" +total_quiz+ "</td>"+
                 "<td>" +attempted_questions+ "</td>"+
                 "<td>" +correct_questions+ "</td>"+
-                "<td>" +timer_array+ "</td>"
+                "<td>" +"<?php echo $timer_array; ?>"+ "</td>"
 
 
                 $("#info").append(localData);
@@ -389,12 +397,13 @@
                         total_quiz:total_quiz,
                         attempted_questions:attempted_questions,
                         correct_questions:correct_questions,
-                        timer_array:timer_array,
+                        timer_array:<?php echo $timer_array; ?>,
                     },
                     success: function(response) {
                         console.log(response);
 
-                        window.location.href="<?php echo site_url('user/preview'); ?>";
+                        // window.location.href="<?php base_url()?>user/preview";
+                        preveiw();
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);
@@ -413,12 +422,8 @@
                 if (time > 0) {
                     intervalID = setInterval(() => {
                         time--;
-                        // if(time = 0 xa bhane){
-                        //     next garne ra previous ma tyahi basnu paryo
-                        // }
-                        // document.getElementById('countdown').innerHTML = time;
+                        
                         $("#countdown").html(time);
-                        // console.log(time);
 
                         if (time <= 0) {
                             timer_array[quiz_id-1] = time;
@@ -453,6 +458,39 @@
                     });
                 }
             }
+
+
+            function preveiw()
+            {
+                is_preview = true;
+
+                alert();
+                
+                $("#exampleModal").modal('hide'); 
+                // $("#quiz_form")[0].reset();
+                // $("#quiz_form").show();
+
+                // quiz_id = 1;
+                $("#next").show();
+                $("#quiz_form").show();
+                // $('#quiz_form')[0].reset();
+
+                load_previous();
+            
+                // highlightAnswers();
+            }
+
+            // function highlightAnswers() {
+            //     var selected = answers_selected[quiz_id-1];
+            //     var correct = actual_answers[quiz_id-1];
+
+            //     if (selected == correct) {
+            //         $('input[type=radio]:checked').next('span').addClass('correct');
+            //     } else if (selected != correct) {
+            //         $('input[type=radio]:checked').next('span').addClass('incorrect');
+            //         $('input[id=option-' + correct + ']').next('span').addClass('correct');
+            //     }
+            // }
     </script>
 	
 

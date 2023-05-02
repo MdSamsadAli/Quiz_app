@@ -30,7 +30,7 @@
                             <th scope="col">Attempted Questions</th>
                             <th scope="col">Score</th>
                             <th scope="col">Time Taken in Sec</th>
-                            <th scope="col">action</th>
+                            <!-- <th scope="col">action</th> -->
                         </tr>
                     </thead>
                     <tbody id="info">
@@ -79,12 +79,12 @@ $(document).ready(function(){
               tbody += "<td>" + data[key]['total_questions'] + "</td>";
               tbody += "<td>" + data[key]['attempted_questions'] + "</td>";
               tbody += "<td>" + data[key]['correct_questions'] + "</td>";
-              tbody += "<td>" + 1  + "</td>";
+              tbody += "<td>" + data[key]['time_taken']  + "</td>";
 
-              tbody += `<td>
-                            <a href="#" id="delete" class="btn btn-danger btn-sm" value="${data[key]['id']}">Delete</a>
-                        </td>`
-              tbody += "</tr>";
+              // tbody += `<td>
+              //               <a href="#" id="delete" class="btn btn-danger btn-sm" value="${data[key]['id']}">Delete</a>
+              //           </td>`
+              // tbody += "</tr>";
             }
             $("#info").html(tbody);
           },
