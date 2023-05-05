@@ -50,24 +50,20 @@
 <!-- Section: Design Block -->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl " role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
         <div id="username">
-
         </div>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div class="modal-body">
         <table class="table table-striped">
           <thead>
             <tr>
               <th scope="col">Sno.</th>
-              <th scope="col">Quiz_played_id</th>
+              <!-- <th scope="col">Quiz_played_id</th> -->
               <th scope="col">Questions</th>
               <th scope="col">Correct Answer</th>
               <th scope="col">Selected Answer</th>
@@ -83,7 +79,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
@@ -139,7 +134,6 @@ $(document).ready(function(){
       
       $(document).on('click', '.btn-view', function() {
           var id = $(this).data('id');
-          alert(id);
           get_preview(id);
       });
       
@@ -152,23 +146,27 @@ $(document).ready(function(){
           success: function (response) {
             console.log(response);
 
+            // $("#username").val(response.username);
+
             var tbody ="";
             var div ="";
             var id = 1;
 
-            for (var i = 0; i < response.length; i++) {
+            div += "<h1>" + response['username'] + "</h1>";
+            $("#username").html(div);
+
+            for (var i = 0; i < 10; i++) {
               tbody += "<tr>";
               tbody += "<td>" + (i+1) + "</td>";
-              tbody += "<td>" + response[i]['quiz_played_id'] + "</td>";
-              tbody += "<td>" + response[i]['questions'] + "</td>";
-              tbody += "<td>" + response[i]['correct_answer'] + "</td>";
-              tbody += "<td>" + response[i]['selected_answer'] + "</td>";
-              tbody += "<td>" + response[i]['timer']  + "</td>";
+              // tbody += "<td>" + response['quiz_played_id'][i] + "</td>";
+              tbody += "<td>" + response['questions'][i] + "</td>";
+              tbody += "<td>" + response['correct_answer'][i]  + "</td>";
+              tbody += "<td>" + response['selected_answer'][i]  + "</td>";
+              tbody += "<td>" + response['timer'][i]  + "</td>";
               tbody += "</tr>";
             }
             
-            // div += "<h1>" + response['username'] + "</h1>";
-            // $("#username").html(div);
+            
 
             // for (var key = 0; key < response.length; key++) {
             //   var quiz_played_id = response[key]['quiz_played_id'] || '';

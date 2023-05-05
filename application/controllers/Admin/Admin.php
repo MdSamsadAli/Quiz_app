@@ -63,8 +63,7 @@ class Admin extends CI_Controller
        else {
         $str = "what happened to id";
         var_dump($str);
-       }
-        // var_dump($id);
+        }
     }
 
 }
