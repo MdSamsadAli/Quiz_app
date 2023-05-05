@@ -39,13 +39,14 @@ class User extends CI_Controller
             $data['timer_array'] = $timer_array;
             
             $this->session->set_userdata('username', $username);
+            $this->session->set_userdata('timer_array', $timer_array);
             $this->load->view('user/index', $data);
         }
     }
     public function getAll()
     {
         $data = $this->question->get_all_data();
-        $id = $this->input->post('id');
+        // $id = $this->input->post('id');
         $question = $data[0]->questions;
         $answer;
         foreach ($data as $i){
@@ -81,14 +82,38 @@ class User extends CI_Controller
             'time_taken' => $timer_array,
             'started' => date("Y-m-d H:i:s"),
         );
+
+
+        // $request = $this->input->post();
+        // echo json_encode($request);
+
+        $res = $this->question->store($data);
+        $preview = $this->question->save($res);
+
+        // if($this->question->store($data))
+        // {
+        //     echo json_encode(array("status" => "success"));
+        // }
+        // else{
+        //     echo json_encode(array("status" => "Error"));
+        // }
+        // $res1 = $this->Quiz_model->save_preview($res);
+
+        //n $data to db and return corresponding key;
+
+        // new array, q_id(), time(), selected(). $data terurned
+
         // $html = $this->input->post('test');
-        if($this->question->store($data))
-        {
-            echo json_encode(array("status" => "success"));
-        }
-        else{
-            echo json_encode(array("status" => "Error"));
-        }
+        // $insert1= $this->question->store($data);
+        // if( $insert1)
+        // {
+        // //  $insert2= $this->question->store_more($insert1);
+
+        //     echo json_encode(array("status" => "success"));
+        // }
+        // else{
+        //     echo json_encode(array("status" => "Error"));
+        // }
     }
     public function preview()
     {

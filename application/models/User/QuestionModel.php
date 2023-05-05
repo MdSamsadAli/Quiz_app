@@ -33,7 +33,6 @@ class QuestionModel extends CI_Model
     public function get_all_data()
     {
         $id = $this->input->post('id');
-        // $id = 1;
         $this->db->select('t1.questions, t2.*');
         $this->db->from('quiz_questions t1');
         $this->db->join('quiz_options t2', 't1.id = t2.question_id', 'inner');
@@ -45,8 +44,33 @@ class QuestionModel extends CI_Model
     public function store($data)
     {
         $query = $this->db->insert('quiz_played', $data);
-        return $query;
+        $insert_id = $this->db->insert_id();
+        return $insert_id;
     }
+
     
+    public function save($id){
+        $questions_id = $this->input->post('questions'); // example array for q_ids
+        $answers = $this->input->post('answers_selected');// example array for answers
+        $correct = $this->input->post('correct_answer');// example array for answers
+        $time = $this->input->post('timer_array'); // example array for times
+
+        $data = array();
+        foreach ($questions_id as $index => $question_id) {
+            $data[] = array(
+                // 'id' => $id,
+                'quiz_played_id' => $id,
+                'question_id' => $questions_id[$index],
+                'selected_answer' => $answers[$index],
+                'correct_answer' => $correct[$index],
+                'timer' => $time[$index]
+            );
+        }
+
+        $this->db->insert_batch('admin_preview', $data);
+        $insert_count = count($data);
+        return($insert_count);
+
+    }
 
 }

@@ -9,7 +9,12 @@
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 
 	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-
+    <!-- <style>
+        .correct { color: white;
+          font-weight: bold;}
+        .incorrect { color: black; 
+          font-weight: bold;}
+    </style> -->
 </head>
 <body>
 
@@ -24,7 +29,7 @@
                 <div class="border">
                     <div class="question bg-white p-3 border-bottom">
                         <div class="d-flex flex-row justify-content-between align-items-center mcq">
-                            <h4>Quiz Game</h4>
+                            <h4 id="rename">Quiz Game</h4>
                             
                             <h1><span id="countdown"></span></h1>
                             
@@ -146,7 +151,7 @@
             </table>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="submit">Save</button>
+            <button type="button" class="btn btn-primary" id="submit">Preview</button>
         </div>
     </div>
     <!-- </form> -->
@@ -169,10 +174,18 @@
             var index = 0;
 
             var correct_questions = 0;
+            var correct_answer = new Array(total_questions).fill(0);
             var attempted_questions = 0;
             var count = 0;
             var blank = 0;
+            var time_taken;
 
+            var questions = new Array(total_questions).fill(0);
+            for (var i = 0; i < total_questions; i++)
+            {
+                questions[i] = i+1;
+            }
+            console.log(questions);
 
             var is_preview = false;
 
@@ -200,9 +213,15 @@
                     dataType: "json",
                     data: {id: quiz_id},
                     success: function(response){
+                        console.log(response);
+                        correct_answer[quiz_id-1] = response.answer;
 
                         localStorage.setItem('item' + quiz_id, JSON.stringify(response));
-                        timer();
+                        // timer();
+                        if(!is_preview) 
+                        {
+                            timer();
+                        }
                         const obj = JSON.parse(localStorage.getItem('item' + quiz_id));
                         
                         if(quiz_id == 1){
@@ -234,7 +253,7 @@
 
             $(document).on("click", "#next", function(e) {
                 e.preventDefault();
-                console.log(answers_selected);
+                // console.log(answers_selected);
 
                 save_clicked();
                 // incr();
@@ -242,16 +261,19 @@
                 clearInterval(intervalID);
 
                 // $("#prev").hide();
-                console.log(quiz_id);
+                // console.log(quiz_id);
 
 
                 
                 if(quiz_id > total_quiz-1){
                 // alert("Quiz result");
-                    quiz_result();
-                    $("#next").hide();
-                    $("#show").click();
-
+                    if(!is_preview) 
+                    {
+                        quiz_result();
+                        $("#next").hide();
+                        $("#show").click();
+                    }
+                    
                     return;
                 }
                 quiz_id++;
@@ -262,24 +284,25 @@
                     index++;
                     fetch();
                 }
-                // if(!is_preview) 
-                // {
-                //     timer();
-                // }
+                
                 load_previous();
             });
 
 
             $(document).on("click", "#prev", function(e) {
                 e.preventDefault();
+                console.log(calculate_time());
                 // $("#next").show();
                 // $("#show").hide();
 
 
                 timer_array[quiz_id-1] = time;
                 clearInterval(intervalID);
-                console.log(answers_selected);
-                save_clicked();
+                // console.log(answers_selected);
+                if(!is_preview){
+
+                    save_clicked();
+                }
                 // timer();
 
                 if(quiz_id == 1){
@@ -301,14 +324,14 @@
                 var selectedValue;
                 var selectedOption = $("input[name='option']:checked");
                 if (selectedOption.length > 0) {
-                selectedValue = selectedOption.siblings('span').text();
+                    selectedValue = selectedOption.siblings('span').text();
                 } 
                 // alert(selectedValue);
-                console.log(selectedValue);
+                // console.log(selectedValue);
                 answers_selected[quiz_id-1] = selectedValue;
                 // console.log(answers_selected);
                 selectedOption.prop("checked", false);
-                console.log(answers_selected);
+                // console.log(answers_selected);
                 return;
             }
 
@@ -341,13 +364,19 @@
                 $("#option3").html(obj.option[2]);
                 $("#option4").html(obj.option[3]);
 
-
-                $('input[name="option"]').each(function(index) {
-                if ($(this).siblings('span').text() == answers_selected[quiz_id-1]) {
-                    // console.log(answers_selected[quiz_id-1]);
-                    $('#option-' + (index+1)).prop('checked', true);
+                if(!is_preview){
+                    $('input[name="option"]').each(function(index) {
+                    if ($(this).siblings('span').text() == answers_selected[quiz_id-1]) {
+                        // console.log(answers_selected[quiz_id-1]);
+                        $('#option-' + (index+1)).prop('checked', true);
+                    }
+                    });
                 }
-                });
+                else{
+                    highlightAnswers();
+                }
+
+
             }
 
 
@@ -356,7 +385,7 @@
                 
                 for (let i = 0; i < total_quiz; i++){
                     const obj = JSON.parse(localStorage.getItem("item"+(i+1)));
-                    console.log(obj);
+                    // console.log(obj);
 
                     if(obj.answer == answers_selected[i]){
                         correct_questions++;
@@ -369,7 +398,8 @@
                     }
                 }
                 attempted_questions = total_quiz - blank;
-                console.log (correct_questions, attempted_questions, total_quiz);
+                time_taken = calculate_time();
+                // console.log (correct_questions, attempted_questions, total_quiz);
             }
            
             function show()
@@ -381,6 +411,7 @@
                 "<td>" +attempted_questions+ "</td>"+
                 "<td>" +correct_questions+ "</td>"+
                 "<td>" +"<?php echo $timer_array; ?>"+ "</td>"
+                
 
 
                 $("#info").append(localData);
@@ -397,10 +428,15 @@
                         total_quiz:total_quiz,
                         attempted_questions:attempted_questions,
                         correct_questions:correct_questions,
-                        timer_array:<?php echo $timer_array; ?>,
+                        timer_array:time_taken,
+                        
+                        questions,
+                        answers_selected,
+                        correct_answer,
+                        timer_array,
                     },
                     success: function(response) {
-                        console.log(response);
+                        // console.log(response);
 
                         // window.location.href="<?php base_url()?>user/preview";
                         preveiw();
@@ -412,11 +448,12 @@
             });
 
 
+
            
             function timer() {
                 time = timer_array[quiz_id-1];
 
-                console.log(timer_array);
+                // console.log(timer_array);
 
                 // let intervalID;
                 if (time > 0) {
@@ -437,6 +474,9 @@
 
                     }, 1000);
                 }
+
+
+                
                 else if(time >= 0){ 
                     // console.log(time > 0);
                     clearInterval(intervalID);
@@ -452,11 +492,38 @@
 
                     $('#prev').click(function() {
                         timer_array[quiz_id] = time;
-                        console.log(timer_array);
+                        // console.log(timer_array);
                         clearInterval(intervalID);
                         return;
                     });
                 }
+            }
+
+            function calculate_time() {
+                // Get the start time as a Unix timestamp in milliseconds
+                var start_time_str = "<?php echo $this->session->userdata('timer_array'); ?>";
+
+                var start_time = new Date(start_time_str).getTime() / 1000;
+                // alert(start_time);
+                
+                // Get the current time as a Unix timestamp in milliseconds
+                var current_time = new Date().getTime() / 1000;
+                // alert(current_time);
+                
+                // Calculate the difference between the current time and the start time in seconds
+                var elapsed_time = Math.floor((current_time - start_time));
+
+
+                // alert(elapsed_time);
+
+                var hours = Math.floor(elapsed_time / 3600);
+                var minutes = Math.floor((elapsed_time - hours * 3600) / 60);
+                var seconds = Math.floor(elapsed_time - hours * 3600 - minutes * 60);
+
+                // Format the countdown timer as hh:mm:ss
+                var countdown = seconds.toString().padStart(0, "0");
+                                // alert(countdown);
+                return countdown;
             }
 
 
@@ -464,33 +531,45 @@
             {
                 is_preview = true;
 
-                alert();
+                // alert();
                 
                 $("#exampleModal").modal('hide'); 
-                // $("#quiz_form")[0].reset();
-                // $("#quiz_form").show();
-
-                // quiz_id = 1;
                 $("#next").show();
                 $("#quiz_form").show();
-                // $('#quiz_form')[0].reset();
-
+                $("#rename").html("Preview");
                 load_previous();
-            
                 // highlightAnswers();
             }
 
-            // function highlightAnswers() {
-            //     var selected = answers_selected[quiz_id-1];
-            //     var correct = actual_answers[quiz_id-1];
+            function highlightAnswers() {
+                // alert();
 
-            //     if (selected == correct) {
-            //         $('input[type=radio]:checked').next('span').addClass('correct');
-            //     } else if (selected != correct) {
-            //         $('input[type=radio]:checked').next('span').addClass('incorrect');
-            //         $('input[id=option-' + correct + ']').next('span').addClass('correct');
-            //     }
-            // }
+                $("input[type=radio]").next('span').removeClass('correct incorrect');
+
+                // console.log("correct: "+ correct_answer);
+                var selected = answers_selected[quiz_id-1];
+                var correct = correct_answer[quiz_id-1];
+                // alert(selected);
+                // console.log(correct);
+                console.log("correct: "+ correct + " selected: "+ selected);
+
+                // if (selected == correct) {
+                //     console.log("inside if condition of highlight answer function: "+correct);
+                //     $('input[type=radio]:checked').next('span').addClass('correct');
+                // } else if (selected != correct) {
+                //     console.log('correct answer: ' + correct + "selected answer: " + selected);
+                //     $('input[type=radio]:checked').next('span').addClass('incorrect');
+                // }
+
+                if (selected == correct) {
+                    $('span:contains("' + selected + '")').addClass('correct');
+                }
+                
+                else {
+                    $('span:contains("' + correct + '")').addClass('correct');
+                    $('span:contains("' + selected + '")').addClass('incorrect');
+                }
+            }
     </script>
 	
 

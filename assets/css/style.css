@@ -34,6 +34,15 @@ label.radio input:checked + span {
 	color: #fff;
 }
 
+.correct {
+	background-color: green !important;
+	font-weight: bold;
+}
+.incorrect {
+	background-color: red !important;
+	font-weight: bold;
+}
+
 .ans {
 	margin-left: 36px !important;
 }

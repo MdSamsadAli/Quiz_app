@@ -5,7 +5,7 @@ class Admin extends CI_Controller
     {
         parent::__construct();
         // $this->load->model('UserModal');
-        $this->check_auth();
+        // $this->check_auth();
     }
     function check_auth()
     {
@@ -32,8 +32,16 @@ class Admin extends CI_Controller
     {
         $data = $this->usermodal->getDatas();
         echo json_encode($data);
+    }
+    public function getPreview()
+    {
+        // $id = $this->input->post('id');
+        $data = $this->usermodal->getPreviewData();
+        echo json_encode($data);
         // var_dump($data);
     }
 
 }
 ?>
+
+

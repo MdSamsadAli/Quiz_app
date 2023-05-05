@@ -25,16 +25,17 @@
                     <thead>
                         <tr>
                             <th scope="col">SNo.</th>
+                            <th scope="col">quiz_played_id</th>
                             <th scope="col">Username</th>
                             <th scope="col">Total Questions</th>
                             <th scope="col">Attempted Questions</th>
                             <th scope="col">Score</th>
                             <th scope="col">Time Taken in Sec</th>
-                            <!-- <th scope="col">action</th> -->
+                            <th scope="col">action</th>
                         </tr>
                     </thead>
                     <tbody id="info">
-                        <tr >
+                        <tr>
                             
                         </tr>
                     </tbody>
@@ -48,6 +49,48 @@
 </section>
 <!-- Section: Design Block -->
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <div id="username">
+
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Sno.</th>
+              <th scope="col">Quiz_played_id</th>
+              <th scope="col">Questions</th>
+              <th scope="col">Correct Answer</th>
+              <th scope="col">Selected Answer</th>
+              <th scope="col">Time Taken</th>
+            </tr>
+          </thead>
+          <tbody id="preview">
+            <tr>
+             
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
@@ -60,7 +103,10 @@
 
 
 $(document).ready(function(){
+
+  
   fetch();
+  get_preview();
 
       function fetch(){
         $.ajax({
@@ -68,25 +114,90 @@ $(document).ready(function(){
           type: "POST",
           dataType: "json",
           success: function (data) {
-            console.log(data);
+            // console.log(data);
 
             var tbody ="";
             var id = 1;
             for(var key in data) {
               tbody += "<tr>";
               tbody += "<td>" + id++; + "</td>";
+              tbody += "<td>" + data[key]['id'] + "</td>";
               tbody += "<td>" + data[key]['username'] + "</td>";
               tbody += "<td>" + data[key]['total_questions'] + "</td>";
               tbody += "<td>" + data[key]['attempted_questions'] + "</td>";
               tbody += "<td>" + data[key]['correct_questions'] + "</td>";
               tbody += "<td>" + data[key]['time_taken']  + "</td>";
 
-              // tbody += `<td>
-              //               <a href="#" id="delete" class="btn btn-danger btn-sm" value="${data[key]['id']}">Delete</a>
-              //           </td>`
-              // tbody += "</tr>";
+              tbody += `<td>
+                            <a href="#" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger btn-sm" value="${data[key]['username']}" >View</a>
+                        </td>`
             }
             $("#info").html(tbody);
+          },
+        });
+      }
+      
+
+      // function prev_id(id){
+      //   $("#exampleModal").modal("show");
+      //   get_preview(id);
+      // }
+
+
+      // function get_preview()
+      // {
+      //   $.ajax({
+      //     url: "<?php echo base_url(); ?>admin/admin/getPreview",
+      //     dataType: "json",
+      //     type: "POST",
+      //     success: function (data)
+      //     {
+      //       console.log(data);
+      //       var tbody ="";
+      //       var id = 1;
+      //       for(var key in data) {
+      //         tbody += "<tr>";
+      //         tbody += "<td>" + id++; + "</td>";
+      //         // tbody += "<td>" + data[key]['quiz_played_id'] + "</td>";
+      //         tbody += "<td>" + data[key]['question_id'] + "</td>";
+      //         tbody += "<td>" + data[key]['correct_answer'] + "</td>";
+      //         tbody += "<td>" + data[key]['selected_answer'] + "</td>";
+      //         tbody += "<td>" + data[key]['timer']  + "</td>";
+      //         tbody += "</tr>";
+
+
+      //       }
+      //       $("#info").html(tbody);
+      //     } 
+      //   });
+      // }
+
+      function get_preview(){
+        $.ajax({
+          url: "<?php echo base_url() ?>admin/admin/getPreview",
+          type: "GET",
+          dataType: "json",
+          // data: {id},
+          success: function (data) {
+            console.log(data);
+
+            var tbody ="";
+            var div ="";
+            var id = 1;
+            
+            div += "<h1>" +data[0]['username'] + "</h1>";
+            $("#username").html(div);
+
+            for(var key=0;key<10;key++) {
+              tbody += "<tr>";
+              tbody += "<td>" + id++; + "</td>";
+              tbody += "<td>" + data[key]['quiz_played_id'] + "</td>";
+              tbody += "<td>" + data[key]['questions'] + "</td>";
+              tbody += "<td>" + data[key]['correct_answer'] + "</td>";
+              tbody += "<td>" + data[key]['selected_answer'] + "</td>";
+              tbody += "<td>" + data[key]['timer']  + "</td>";
+            }
+            $("#preview").html(tbody);
           },
         });
       }
