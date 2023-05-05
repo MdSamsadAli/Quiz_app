@@ -120,7 +120,7 @@ $(document).ready(function(){
             var id = 1;
             for(var key in data) {
               tbody += "<tr>";
-              tbody += "<td>" + id++; + "</td>";
+              tbody += "<td>" + id++ + "</td>";
               tbody += "<td>" + data[key]['id'] + "</td>";
               tbody += "<td>" + data[key]['username'] + "</td>";
               tbody += "<td>" + data[key]['total_questions'] + "</td>";
@@ -129,7 +129,7 @@ $(document).ready(function(){
               tbody += "<td>" + data[key]['time_taken']  + "</td>";
 
               tbody += `<td>
-                            <a href="#" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger btn-sm" value="${data[key]['username']}" >View</a>
+                            <a href="#" class="btn btn-danger btn-sm btn-view" data-id="${data[key]['id']}" data-toggle="modal" data-target="#exampleModal">View</a>
                         </td>`
             }
             $("#info").html(tbody);
@@ -137,66 +137,55 @@ $(document).ready(function(){
         });
       }
       
-
-      // function prev_id(id){
-      //   $("#exampleModal").modal("show");
-      //   get_preview(id);
-      // }
-
-
-      // function get_preview()
-      // {
-      //   $.ajax({
-      //     url: "<?php echo base_url(); ?>admin/admin/getPreview",
-      //     dataType: "json",
-      //     type: "POST",
-      //     success: function (data)
-      //     {
-      //       console.log(data);
-      //       var tbody ="";
-      //       var id = 1;
-      //       for(var key in data) {
-      //         tbody += "<tr>";
-      //         tbody += "<td>" + id++; + "</td>";
-      //         // tbody += "<td>" + data[key]['quiz_played_id'] + "</td>";
-      //         tbody += "<td>" + data[key]['question_id'] + "</td>";
-      //         tbody += "<td>" + data[key]['correct_answer'] + "</td>";
-      //         tbody += "<td>" + data[key]['selected_answer'] + "</td>";
-      //         tbody += "<td>" + data[key]['timer']  + "</td>";
-      //         tbody += "</tr>";
-
-
-      //       }
-      //       $("#info").html(tbody);
-      //     } 
-      //   });
-      // }
-
-      function get_preview(){
+      $(document).on('click', '.btn-view', function() {
+          var id = $(this).data('id');
+          alert(id);
+          get_preview(id);
+      });
+      
+      function get_preview(id){
         $.ajax({
           url: "<?php echo base_url() ?>admin/admin/getPreview",
-          type: "GET",
+          type: "POST",
           dataType: "json",
-          // data: {id},
-          success: function (data) {
-            console.log(data);
+          data: {id},
+          success: function (response) {
+            console.log(response);
 
             var tbody ="";
             var div ="";
             var id = 1;
-            
-            div += "<h1>" +data[0]['username'] + "</h1>";
-            $("#username").html(div);
 
-            for(var key=0;key<10;key++) {
+            for (var i = 0; i < response.length; i++) {
               tbody += "<tr>";
-              tbody += "<td>" + id++; + "</td>";
-              tbody += "<td>" + data[key]['quiz_played_id'] + "</td>";
-              tbody += "<td>" + data[key]['questions'] + "</td>";
-              tbody += "<td>" + data[key]['correct_answer'] + "</td>";
-              tbody += "<td>" + data[key]['selected_answer'] + "</td>";
-              tbody += "<td>" + data[key]['timer']  + "</td>";
+              tbody += "<td>" + (i+1) + "</td>";
+              tbody += "<td>" + response[i]['quiz_played_id'] + "</td>";
+              tbody += "<td>" + response[i]['questions'] + "</td>";
+              tbody += "<td>" + response[i]['correct_answer'] + "</td>";
+              tbody += "<td>" + response[i]['selected_answer'] + "</td>";
+              tbody += "<td>" + response[i]['timer']  + "</td>";
+              tbody += "</tr>";
             }
+            
+            // div += "<h1>" + response['username'] + "</h1>";
+            // $("#username").html(div);
+
+            // for (var key = 0; key < response.length; key++) {
+            //   var quiz_played_id = response[key]['quiz_played_id'] || '';
+            //   var questions = response[key]['questions'] || '';
+            //   var correct_answer = response[key]['correct_answer'] || '';
+            //   var selected_answer = response[key]['selected_answer'] || '';
+            //   var timer = response[key]['timer'] || '';
+
+            //   tbody += "<tr>";
+            //   tbody += "<td>" + id++ + "</td>";
+            //   tbody += "<td>" + quiz_played_id + "</td>";
+            //   tbody += "<td>" + questions + "</td>";
+            //   tbody += "<td>" + correct_answer + "</td>";
+            //   tbody += "<td>" + selected_answer + "</td>";
+            //   tbody += "<td>" + timer + "</td>";
+            //   tbody += "</tr>";
+            // }
             $("#preview").html(tbody);
           },
         });
