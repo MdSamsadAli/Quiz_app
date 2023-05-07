@@ -6,15 +6,6 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-
-	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-    <!-- <style>
-        .correct { color: white;
-          font-weight: bold;}
-        .incorrect { color: black; 
-          font-weight: bold;}
-    </style> -->
 </head>
 <body>
 
@@ -98,29 +89,10 @@
            
         </div>
     </div>
-<!-- </div> -->
 
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-	<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
-    <script>
-        $(document).ready(function(){
-			$('.slider').slick({
-				arrows : false,
-				infinite: false,
-			});
-			$('.prev').click(function(e){ 
-		      	e.preventDefault(); 
-				$('.slider').slick('slickPrev');
-			} );
-			
-			$('.next').click(function(e){
-				e.preventDefault(); 
-				$('.slider').slick('slickNext');
-			} );  
-		});
-	</script> -->
 
 
 <!-- Modal -->
@@ -342,19 +314,16 @@
 
 
             function load_previous(){
-                // $("#prev").hide();
-                // $('#prev').addClass("d-none");
-
-
-                // $('#quiz_form')[0].reset();
-
-                // timer();
+                         
+                if(quiz_id == 1){
+                    // console.log(quiz_id);
+                    $("#prev").hide();
+                    $("#show").hide();
+                }    
                 if(is_preview)
                 {
                     time = timer_array[quiz_id-1];
                     $("#countdown").html(time);
-
-
                 }
                 const obj = JSON.parse(localStorage.getItem("item" +quiz_id));
                 
@@ -378,14 +347,8 @@
                 else{
                     highlightAnswers();
                 }
-
-
             }
-
-
             function quiz_result() {
-                
-                
                 for (let i = 0; i < total_quiz; i++){
                     const obj = JSON.parse(localStorage.getItem("item"+(i+1)));
                     // console.log(obj);
@@ -419,6 +382,10 @@
 
                 $("#info").append(localData);
 
+            }
+
+            function submit() {
+                
             }
 
             $(document).on("click", "#submit", function(e) {
@@ -458,6 +425,10 @@
 
                 // let intervalID;
                 if (time > 0) {
+                    console.log("xiryo");
+                    $('input[name="option"]').each(function() {
+                        $(this).prop('disabled', false);
+                    });
                     intervalID = setInterval(() => {
                         time--;
                         
@@ -476,15 +447,40 @@
                     }, 1000);
                 }
 
+                // else if(time == 0)
+                // {
+                    // $('input[name="option"]').each(function() {
+                    //     if($(this).siblings('span').text() != selected) {
+                    //     $(this).prop('disabled', true);
+                    //     }
+                    // });
+                // }
+
 
                 
-                else if(time >= 0){ 
+                else if(time == 0){ 
+
+                    console.log("xiryoo 0 condition ma");
+
+                    var selected = answers_selected[quiz_id-1];
+
                     // console.log(time > 0);
+                    $("#countdown").html(time);
                     clearInterval(intervalID);
                     // document.getElementById('next').click();
-                    $("#next").click();
+                    $('input[name="option"]').each(function() {
+                        if($(this).siblings('span').text() != selected) {
+                            $(this).prop('disabled', true);
+                        }
+                    });
+                    // $("#next").click();
+                    console.log(time);
                 }
                 else{
+                    
+
+                    // $("#countdown").html(time);
+
                     $('#next').click(function() {
                     timer_array[quiz_id-1] = time;
                     // console.log(timer_array);
@@ -562,6 +558,12 @@
                 else {
                     $('span:contains("' + correct + '")').addClass('correct');
                     $('span:contains("' + selected + '")').addClass('incorrect');
+
+                    $('input[name="option"]').each(function() {
+                        if($(this).siblings('span').text() != selected) {
+                        $(this).prop('disabled', true);
+                        }
+                    });
                 }
             }
     </script>

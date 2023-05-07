@@ -30,17 +30,22 @@ label.radio span {
 
 label.radio input:checked + span {
 	border-color: rgba(0, 0, 0, 0.819);
-	background-color: rgb(12, 48, 16);
+	background-color: green ;
 	color: #fff;
+	border: none !important;
 }
 
 .correct {
 	background-color: green !important;
+	color: #fff !important;
 	font-weight: bold;
+	border: none !important;
 }
 .incorrect {
 	background-color: red !important;
+	color: #fff !important;
 	font-weight: bold;
+	border: none !important;
 }
 
 .ans {
