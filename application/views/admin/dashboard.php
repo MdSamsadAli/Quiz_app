@@ -67,7 +67,7 @@
               <th scope="col">Questions</th>
               <th scope="col">Correct Answer</th>
               <th scope="col">Selected Answer</th>
-              <th scope="col">Time Taken</th>
+              <th scope="col">Time Left</th>
             </tr>
           </thead>
           <tbody id="preview">
@@ -165,25 +165,7 @@ $(document).ready(function(){
               tbody += "<td>" + response['timer'][i]  + "</td>";
               tbody += "</tr>";
             }
-            
-            
 
-            // for (var key = 0; key < response.length; key++) {
-            //   var quiz_played_id = response[key]['quiz_played_id'] || '';
-            //   var questions = response[key]['questions'] || '';
-            //   var correct_answer = response[key]['correct_answer'] || '';
-            //   var selected_answer = response[key]['selected_answer'] || '';
-            //   var timer = response[key]['timer'] || '';
-
-            //   tbody += "<tr>";
-            //   tbody += "<td>" + id++ + "</td>";
-            //   tbody += "<td>" + quiz_played_id + "</td>";
-            //   tbody += "<td>" + questions + "</td>";
-            //   tbody += "<td>" + correct_answer + "</td>";
-            //   tbody += "<td>" + selected_answer + "</td>";
-            //   tbody += "<td>" + timer + "</td>";
-            //   tbody += "</tr>";
-            // }
             $("#preview").html(tbody);
           },
         });

@@ -185,7 +185,7 @@
             {
                 questions[i] = i+1;
             }
-            console.log(questions);
+            // console.log(questions);
 
             var is_preview = false;
 
@@ -213,7 +213,7 @@
                     dataType: "json",
                     data: {id: quiz_id},
                     success: function(response){
-                        console.log(response);
+                        // console.log(response);
                         correct_answer[quiz_id-1] = response.answer;
 
                         localStorage.setItem('item' + quiz_id, JSON.stringify(response));
@@ -321,6 +321,7 @@
             });
 
             function save_clicked(){
+                if(!is_preview){
                 var selectedValue;
                 var selectedOption = $("input[name='option']:checked");
                 if (selectedOption.length > 0) {
@@ -333,6 +334,7 @@
                 selectedOption.prop("checked", false);
                 // console.log(answers_selected);
                 return;
+            }
             }
 
             // $('#prev').css("display", "none !important");
@@ -352,6 +354,7 @@
                     time = timer_array[quiz_id-1];
                     $("#countdown").html(time);
 
+
                 }
                 const obj = JSON.parse(localStorage.getItem("item" +quiz_id));
                 
@@ -366,10 +369,10 @@
 
                 if(!is_preview){
                     $('input[name="option"]').each(function(index) {
-                    if ($(this).siblings('span').text() == answers_selected[quiz_id-1]) {
-                        // console.log(answers_selected[quiz_id-1]);
-                        $('#option-' + (index+1)).prop('checked', true);
-                    }
+                        if ($(this).siblings('span').text() == answers_selected[quiz_id-1]) {
+                            // console.log(answers_selected[quiz_id-1]);
+                            $('#option-' + (index+1)).prop('checked', true);
+                        }
                     });
                 }
                 else{
@@ -437,8 +440,6 @@
                     },
                     success: function(response) {
                         // console.log(response);
-
-                        // window.location.href="<?php base_url()?>user/preview";
                         preveiw();
                     },
                     error: function(xhr, status, error) {
@@ -553,13 +554,6 @@
                 // console.log(correct);
                 console.log("correct: "+ correct + " selected: "+ selected);
 
-                // if (selected == correct) {
-                //     console.log("inside if condition of highlight answer function: "+correct);
-                //     $('input[type=radio]:checked').next('span').addClass('correct');
-                // } else if (selected != correct) {
-                //     console.log('correct answer: ' + correct + "selected answer: " + selected);
-                //     $('input[type=radio]:checked').next('span').addClass('incorrect');
-                // }
 
                 if (selected == correct) {
                     $('span:contains("' + selected + '")').addClass('correct');

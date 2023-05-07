@@ -55,8 +55,4 @@ class UserModal extends CI_Model
     }
 }
 
-
-// $data = $this->usermodal->getPreviewData();
-// echo json_encode($data);
-
 ?>

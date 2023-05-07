@@ -6,20 +6,18 @@ class User extends CI_Controller
     function __construct()
     {
         parent::__construct();
-
-        // $this->check_auth();
-
     }
 
     public function check_auth() 
     {
         if(!$this->session->userdata('logged_in'))
         {
-            $this->load->view('user/login');
+            redirect('/');
         }
     }
     public function login()
     {
+        session_destroy();
         $this->load->view('user/login');
     }
     function index()
@@ -33,7 +31,6 @@ class User extends CI_Controller
             $this->load->view('user/login');
         }
         else {
-            $this->session->userdata('logged_in', TRUE);
             
             $data['username'] = $username;
             $data['timer_array'] = $timer_array;
@@ -83,42 +80,13 @@ class User extends CI_Controller
             'started' => date("Y-m-d H:i:s"),
         );
 
-
-        // $request = $this->input->post();
-        // echo json_encode($request);
-
         $res = $this->question->store($data);
         $preview = $this->question->save($res);
 
-        // if($this->question->store($data))
-        // {
-        //     echo json_encode(array("status" => "success"));
-        // }
-        // else{
-        //     echo json_encode(array("status" => "Error"));
-        // }
-        // $res1 = $this->Quiz_model->save_preview($res);
-
-        //n $data to db and return corresponding key;
-
-        // new array, q_id(), time(), selected(). $data terurned
-
-        // $html = $this->input->post('test');
-        // $insert1= $this->question->store($data);
-        // if( $insert1)
-        // {
-        // //  $insert2= $this->question->store_more($insert1);
-
-        //     echo json_encode(array("status" => "success"));
-        // }
-        // else{
-        //     echo json_encode(array("status" => "Error"));
-        // }
     }
     public function preview()
     {
         $this->check_auth();
-        // $this->session->userdata('logged_in', TRUE);
         $this->load->view("user/view");
     }
 }
