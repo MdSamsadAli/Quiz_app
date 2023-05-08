@@ -68,6 +68,10 @@ class Admin extends CI_Controller
         var_dump($str);
         }
     }
+    public function logout()
+    {
+        redirect('/admin');
+    }
 
 }
 ?>

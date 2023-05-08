@@ -6,24 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+    <!-- Additional CSS files for DataTables plugins or extensions (if applicable) -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+
+
 
 </head>
 <body>
 
 
 <!-- Section: Design Block -->
-<section class="vh-100">
+<section>
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center h-100">
       <div class="col-12">
-          <h3 class="mb-5 text-center text-danger">Welcome to Dashboard</h3>
+          <h3 class="text-center text-uppercase">USer Details</h3>
         <div class="shadow-2-strong" style="border-radius: 1rem;">
           <div class="">
               <div class="">
-                  <!-- <button class="btn btn-primary btn-lg btn-block form-control" type="submit">Start Quiz</button> -->
-                  <table class="table">
+                <a href="<?php base_url() ?>admin/admin/logout" class="btn btn-primary btn-block" type="submit">Logout</a>
+                <table id="user_data" class="table table-bordered table-striped">
                     <thead>
-                        <tr>
+                        <tr class="bg-white">
                             <th scope="col">SNo.</th>
                             <th scope="col">quiz_played_id</th>
                             <th scope="col">Username</th>
@@ -52,18 +61,17 @@
 <!-- Modal -->
 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl " role="document">
-    <div class="modal-content">
+    <div class="modal-content img-modal">
       <div class="modal-header">
-        <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
         <div id="username">
         </div>
+        <button type="button" class="btn btn-close" data-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <table class="table table-striped">
           <thead>
             <tr>
               <th scope="col">Sno.</th>
-              <!-- <th scope="col">Quiz_played_id</th> -->
               <th scope="col">Questions</th>
               <th scope="col">Correct Answer</th>
               <th scope="col">Selected Answer</th>
@@ -77,9 +85,7 @@
           </tbody>
         </table>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
+      
     </div>
   </div>
 </div>
@@ -89,6 +95,10 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+<!-- datatable for pagination  -->
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>            
 
 </body>
 </html>
@@ -104,6 +114,7 @@ $(document).ready(function(){
   get_preview();
 
       function fetch(){
+
         $.ajax({
           url: "<?php echo base_url() ?>admin/admin/getAll",
           type: "POST",
@@ -128,6 +139,11 @@ $(document).ready(function(){
                         </td>`
             }
             $("#info").html(tbody);
+
+            $('#user_data').DataTable({
+              "paging": true,
+              "pageLength": 10 // set the number of rows per page
+            });
           },
         });
       }
@@ -138,6 +154,7 @@ $(document).ready(function(){
       });
       
       function get_preview(id){
+
         $.ajax({
           url: "<?php echo base_url() ?>admin/admin/getPreview",
           type: "POST",
@@ -164,6 +181,8 @@ $(document).ready(function(){
               tbody += "<td>" + response['selected_answer'][i]  + "</td>";
               tbody += "<td>" + response['timer'][i]  + "</td>";
               tbody += "</tr>";
+
+              console.log(response['correct_answer'][i]);
             }
 
             $("#preview").html(tbody);

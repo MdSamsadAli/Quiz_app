@@ -22,7 +22,7 @@ class User extends CI_Controller
     }
     function index()
     {
-        
+        // echo "<script>localStorage.clear()</script>";
         $username = $this->input->post('username');
         $timer_array = date("s");
         $this->form_validation->set_rules('username', 'Username', 'trim|required');

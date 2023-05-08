@@ -29,8 +29,6 @@ class UserModal extends CI_Model
         }
     }
 
-    
-
     public function getDatas()
     {
         $query = $this->db->get('quiz_played')->result_array();

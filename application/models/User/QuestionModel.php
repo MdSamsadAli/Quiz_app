@@ -16,19 +16,6 @@ class QuestionModel extends CI_Model
         return $query;
     }
 
-    // public function getanswersbyquestion($questionId)
-    // {
-    //     $this->db->where('question_id', $questionId);
-    //     $query = $this->db->get("quiz_options")->result_array();
-    //     return $query;
-    // }
-    // public function getcorrectanswer($questionId)
-    // {
-    //     $this->db->where('question_id', $questionId);
-    //     $this->db->where('correct', 1);
-    //     $query = $this->db->get("quiz_options")->row()->id;
-    //     return $query;
-    // }
 
     public function get_all_data()
     {
