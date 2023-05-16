@@ -31,16 +31,17 @@ class QuestionModel extends CI_Model
     public function store($data)
     {
         $query = $this->db->insert('quiz_played', $data);
-        $insert_id = $this->db->insert_id();
-        return $insert_id;
+        if($query)
+        {
+            $insert_id = $this->db->insert_id();
+            return $insert_id;
+        }
     }
-
-    
     public function save($id){
-        $questions_id = $this->input->post('questions'); // example array for q_ids
-        $answers = $this->input->post('answers_selected');// example array for answers
-        $correct = $this->input->post('correct_answer');// example array for answers
-        $time = $this->input->post('timer_array'); // example array for times
+        $questions_id = $this->input->post('questions');
+        $answers = $this->input->post('answers_selected');
+        $correct = $this->input->post('correct_answer');
+        $time = $this->input->post('timer_array');
 
         $data = array();
         foreach ($questions_id as $index => $question_id) {

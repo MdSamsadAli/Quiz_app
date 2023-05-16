@@ -65,9 +65,22 @@
       <div class="modal-header">
         <div id="username">
         </div>
+        
         <button type="button" class="btn btn-close" data-dismiss="modal"></button>
+        
       </div>
-      <div class="modal-body">
+      <div class="d-flex mt-3">
+          <div class="indices">
+          </div>
+          <span style="margin: 0 10px 0 0;">Corrected</span>
+          <div class="indice2" style="width: 20px; height: 20px; background:#eda2aae0;">
+          </div>
+          <span style="margin: 0 10px 0 0;">Incorrect</span>
+          <div class="indice3" style="width: 20px; height: 20px; background: #cdcdcd ;">
+          </div>
+          <span>not selected</span>
+      </div>
+      <div class="modal-body p-0">
         <table class="table table-striped">
           <thead>
             <tr>
@@ -161,7 +174,7 @@ $(document).ready(function(){
           dataType: "json",
           data: {id},
           success: function (response) {
-            console.log(response);
+            // console.log(response);
 
             // $("#username").val(response.username);
 
@@ -173,22 +186,36 @@ $(document).ready(function(){
             $("#username").html(div);
 
             for (var i = 0; i < 10; i++) {
-              tbody += "<tr>";
+
+              var isCorrect = (response['correct_answer'][i] == response['selected_answer'][i]);
+              var isAnswered = (response['selected_answer'][i] !== '');
+
+                var bgColor = 'transparent';
+                if (isAnswered) {
+                    bgColor = isCorrect ? '#c0fdcc' : '#eda2aae0';
+                } else {
+                    bgColor = '#cdcdcd';
+                }
+
+                
+                // " + (isCorrect ? '#c0fdcc' : '#eda2aae0') + "
+
+
+              tbody += "<tr style='background-color:" + bgColor + "'> ";
               tbody += "<td>" + (i+1) + "</td>";
-              // tbody += "<td>" + response['quiz_played_id'][i] + "</td>";
               tbody += "<td>" + response['questions'][i] + "</td>";
               tbody += "<td>" + response['correct_answer'][i]  + "</td>";
               tbody += "<td>" + response['selected_answer'][i]  + "</td>";
               tbody += "<td>" + response['timer'][i]  + "</td>";
               tbody += "</tr>";
-
-              console.log(response['correct_answer'][i]);
             }
 
             $("#preview").html(tbody);
           },
         });
       }
+
+
 
     });
 

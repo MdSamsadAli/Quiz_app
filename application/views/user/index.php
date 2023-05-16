@@ -6,26 +6,26 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
-<body>
+<body style="height: 90vh;">
     <div class="container mt-5" id="quiz_form">
         <div class="d-flex justify-content-between">
             <h4 class="text-uppercase text-white">Username: <?php echo $this->session->userdata('username'); ?></h4>
-            <a href="" class="btn btn-outline-light img mb-2" id="end_game">Restart Game</a>
+            <a href="" class="btn btn-outline-info img mb-2" id="end_game">Restart Game</a>
         </div>
         <div class="d-flex justify-content-center row ">
             <div class="col-md-12 col-lg-12" id="preview_form">
                 <div class="border border-radius img">
                     <div class="question  p-3 border-bottom">
                         <div class="d-flex flex-row justify-content-between align-items-center mcq">
-                            <h4 id="rename" class="text-white">Quiz Game</h4>
+                            <h4 id="rename">Quiz Game</h4>
                             
-                            <h1 class="text-white"><span id="countdown"></span></h1>
+                            <h1><span id="countdown"></span></h1>
                             
                         </div>
                     </div>
                     <div class="question  p-3 border-bottom">
                         <div class="d-flex flex-row align-items-center question-title">
-                            <h3 class="text-white">
+                            <h3>
                                 <span id="increment"></span> / 10.
                             </h3>
                             <h5 class="mt-1 ml-2 text-white" id="question">
@@ -40,39 +40,28 @@
                         </div>
                         <div class="ans ml-2">
                             <label class="radio">
-                                <!-- <button id="selectedopt"> -->
                                 <input type="radio" name="option" value="" id="option-2">
-
                                 <span id="option2">
-
                                 </span>
-                                <!-- </button> -->
                             </label>    
                         </div>
                         <div class="ans ml-2">
                             <label class="radio">
-                                <!-- <button id="selectedopt"> -->
                                 <input type="radio" name="option" value="" id="option-3">
-
                                 <span id="option3">
-
                                 </span>
-                                <!-- </button> -->
                             </label>    
                         </div>
                         <div class="ans ml-2">
                             <label class="radio">
-                                <!-- <button id="selectedopt"> -->
                                 <input type="radio" name="option" value="" id="option-4">
-
                                 <span id="option4">
                                 </span>
-                                <!-- </button> -->
                             </label>    
                         </div>
                     </div>
-                    <div class="d-flex flex-row justify-content-between align-items-center p-3 ">
-                        <button class="btn btn-primary align-items-center btn-danger prev" type="button" id="prev"><i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous</button>
+                    <div class="d-flex flex-row justify-content-center align-items-center p-3 ">
+                        <button class="btn btn-primary mr-2 align-items-center btn-danger prev" type="button" id="prev"><i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous</button>
                         <button class="btn btn-primary border-success align-items-center btn-success next" type="button" id="next">Next<i class="fa fa-angle-right ml-2"></i></button>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="show">
                             Show
@@ -219,7 +208,6 @@
             }
             quiz_id++;
             // console.log(id);
-            // timer();
             if (quesAvailable[quiz_id-1] == 0){
                 // alert();
                 index++;
@@ -230,9 +218,6 @@
         $(document).on("click", "#prev", function(e) {
             e.preventDefault();
             console.log(calculate_time());
-            // $("#next").show();
-            // $("#show").hide();
-
 
             timer_array[quiz_id-1] = time;
             clearInterval(intervalID);
@@ -241,10 +226,8 @@
 
                 save_clicked();
             }
-            // timer();
 
             if(quiz_id == 1){
-                // $('#prev').hide();
                 return;
             }
             
@@ -338,6 +321,7 @@
             "<td>" +"<?php echo $timer_array; ?>"+ "</td>"
             $("#info").append(localData);
         }
+        
         $(document).on("click", "#submit", function(e) {
             e.preventDefault();
             $.ajax({

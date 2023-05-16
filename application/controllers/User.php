@@ -6,8 +6,8 @@ class User extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        
     }
-
     public function check_auth() 
     {
         if(!$this->session->userdata('logged_in'))
@@ -82,14 +82,7 @@ class User extends CI_Controller
 
         $res = $this->question->store($data);
         $preview = $this->question->save($res);
-
-    }
-    public function preview()
-    {
-        $this->check_auth();
-        $this->load->view("user/view");
     }
 }
-
 
 ?>
